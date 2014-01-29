@@ -1,48 +1,13 @@
-#!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+#!/usr/bin/env ruby
 
-# fail fast
-set -e
+# sync output
+$stdout.sync = true
 
-# debug
-#set -x
+puts "Installing freetds into #{ARGV[0]}/vendor/freetds"
+puts `mkdir -p #{ARGV[0]}/vendor/freetds`
+puts `curl https://s3.amazonaws.com/firmhouse/freetds-0.tgz -o - | tar -xz -C #{ARGV[0]}/vendor/freetds -f -`
 
-# clean up leaking environment
-unset GIT_DIR
-
-BUILD_DIR=$1
-CACHE_DIR=$2
-
-VERSION=0.91
-
-function indent() {
-  c='s/^/       /'
-  case $(uname) in
-    Darwin) sed -l "$c";;
-    *)      sed -u "$c";;
-  esac
-}
-if [ ! -d "$CACHE_DIR/freetds-$VERSION" ]; then
-  echo "-----> Downloading FreeTDS"
-  mkdir -p $CACHE_DIR
-  FREETDS_TAR=http://mirrors.ibiblio.org/freetds/stable/freetds-0.91.tar.gz
-  curl $FREETDS_TAR -s -o - | tar xzf - -C $CACHE_DIR
-fi
-
-echo "-----> Vendoring FreeTDS into slug"
-cp -r $CACHE_DIR/freetds-$VERSION $BUILD_DIR/freetds
-
-cd $BUILD_DIR/freetds
-
-echo "-----> Configure FreeTDS"
-./configure --prefix=$BUILD_DIR | indent
-echo "-----> Configure make"
-make | indent
-echo "-----> Configure Install FreeTDS"
-make install | indent
-cd $BUILD_DIR
-
-
-LIBRARY_PATH="$BUILD_DIR/freetds/lib:$LIBRARY_PATH"
-CPPATH="$BUILD_DIR/freetds/include:$CPPATH"
-CPATH="$BUILD_DIR/freetds/include:$CPATH"
+ENV['LD_LIBRARY_PATH'] = "#{ARGV[0]}/vendor/freetds/lib:$LIBRARY_PATH"
+ENV['LIBRARY_PATH'] = "#{ARGV[0]}/vendor/freetds/lib:$LIBRARY_PATH"
+ENV['CPPATH'] = "#{ARGV[0]}/vendor/freetds/include:$CPPATH"
+ENV['CPATH'] = "#{ARGV[0]}/vendor/freetds/include:$CPATH"
