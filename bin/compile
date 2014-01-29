@@ -43,7 +43,6 @@ make install | indent
 cd $BUILD_DIR
 
 
-ENV['LD_LIBRARY_PATH'] = "$BUILD_DIR/freetds/lib:$LIBRARY_PATH"
-ENV['LIBRARY_PATH'] = "$BUILD_DIR/freetds/lib:$LIBRARY_PATH"
-ENV['CPPATH'] = "$BUILD_DIR/freetds/include:$CPPATH"
-ENV['CPATH'] = "$BUILD_DIR/freetds/include:$CPATH"
+LIBRARY_PATH = "$BUILD_DIR/freetds/lib:$LIBRARY_PATH"
+CPPATH = "$BUILD_DIR/freetds/include:$CPPATH"
+CPATH = "$BUILD_DIR/freetds/include:$CPATH"
