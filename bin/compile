@@ -1,21 +1,15 @@
-#!/bin/sh
+#!/usr/bin/env ruby
 
-indent() {
-  sed -u 's/^/       /'
-}
+# sync output
+$stdout.sync = true
 
-echo "-----> Install FreeTDS"
-BUILD_DIR=$1
-DOWNLOAD_URL="http://f.cl.ly/items/41391e1i1q0w1d2n0Q1J/freetds-0.91.tgz"
+DOWNLOAD_URL=""
 
-echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
-cd $BUILD_DIR
-curl -L --silent $DOWNLOAD_URL | tar xz
+puts "Installing freetds into #{ARGV[0]}/vendor/freetds"
+puts `mkdir -p #{ARGV[0]}/vendor/freetds`
+puts `curl http://f.cl.ly/items/41391e1i1q0w1d2n0Q1J/freetds-0.91.tgz -o - | tar -xz -C #{ARGV[0]} -f -`
 
-echo "exporting PATH and LIBRARY_PATH" | indent
-PROFILE_PATH="$BUILD_DIR/.profile.d/freetds.sh"
-mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$PATH:$BUILD_DIR/vendor/freetds-0.91/bin"' >> $PROFILE_PATH
-echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$BUILD_DIR/vendor/freetds-0.91/lib"' >> $PROFILE_PATH
-echo 'export CPATH="$CPATH:$BUILD_DIR/vendor/freetds-0.91/include"' >> $PROFILE_PATH
-echo 'export FREETDS_DIR="$BUILD_DIR/vendor/freetds-0.91"' >> $PROFILE_PATH
+ENV['LD_LIBRARY_PATH'] = "#{ARGV[0]}/vendor/freetds-0.91/lib:$LIBRARY_PATH"
+ENV['LIBRARY_PATH'] = "#{ARGV[0]}/vendor/freetds-0.91/lib:$LIBRARY_PATH"
+ENV['CPPATH'] = "#{ARGV[0]}/vendor/freetds-0.91/include:$CPPATH"
+ENV['CPATH'] = "#{ARGV[0]}/vendor/freetds-0.91/include:$CPATH"
