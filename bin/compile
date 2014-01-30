@@ -6,14 +6,11 @@ indent() {
 
 echo "-----> Install FreeTDS"
 BUILD_DIR=$1
-VENDOR_DIR="vendor"
 DOWNLOAD_URL="http://c.aai.io/2T341d1e3K0i/download/freetds_0.9.1.tgz"
 
 echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
 
 cd $BUILD_DIR
-mkdir -p $VENDOR_DIR
-cd $VENDOR_DIR
 curl -L --silent $DOWNLOAD_URL | tar xz
 
 echo "exporting PATH and LIBRARY_PATH" | indent
