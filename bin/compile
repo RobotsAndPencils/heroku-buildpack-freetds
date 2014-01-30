@@ -9,20 +9,12 @@ BUILD_DIR=$1
 DOWNLOAD_URL="http://f.cl.ly/items/41391e1i1q0w1d2n0Q1J/freetds-0.91.tgz"
 
 echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
-echo $PATH
-echo $LD_LIBRARY_PATH
-echo $LIBRARY_PATH
-echo $CPATH
-echo $CPPATH
-
 cd $BUILD_DIR
 curl -L --silent $DOWNLOAD_URL | tar xz
 
 echo "exporting PATH and LIBRARY_PATH" | indent
 PROFILE_PATH="$BUILD_DIR/.profile.d/freetds.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$PATH:vendor/freetds-0.91/bin"' >> $PROFILE_PATH
+echo 'export PATH="$PATH:/app/vendor/freetds-0.91/bin"' >> $PROFILE_PATH
 echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/vendor/freetds-0.91/lib"' >> $PROFILE_PATH
-echo 'export LIBRARY_PATH="$LIBRARY_PATH:/app/vendor/freetds-0.91/lib"' >> $PROFILE_PATH
-echo 'export CPATH="$CPATH:/app/vendor/freetds-0.91/include"' >> $PROFILE_PATH
-echo 'export CPPATH="$CPPATH:/app/vendor/freetds-0.91/include"' >> $PROFILE_PATH
+echo 'export FREETDS_DIR="/app/vendor/freetds-0.91"' >> $PROFILE_PATH
