@@ -19,8 +19,7 @@ mkdir -p $(dirname $PROFILE_PATH)
 echo 'export PATH="$PATH:/app/vendor/freetds-0.91/bin"' >> $PROFILE_PATH
 echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/vendor/freetds-0.91/lib"' >> $PROFILE_PATH
 echo 'export LIBRARY_PATH="$LIBRARY_PATH:/app/vendor/freetds-0.91/lib"' >> $PROFILE_PATH
-echo 'export CPATH="/app/vendor/freetds-0.91/include"' >> $PROFILE_PATH
-echo 'export CPPATH="/app/vendor/freetds-0.91/include"' >> $PROFILE_PATH
-echo 'export FREETDS_DIR="/app/vendor/freetds-0.91"' >> $PROFILE_PATH
-
-bundle config build.tiny_tds -- --with-opt-dir=/app/vendor/freetds_0.91
+echo 'export CPATH="$CPATH:/app/vendor/freetds-0.91/include"' >> $PROFILE_PATH
+echo 'export CPPATH="$CPPATH://app/vendor/freetds-0.91/include"' >> $PROFILE_PATH
+echo 'export FREETDS_PATH="/app/vendor/freetds-0.91"' >> $PROFILE_PATH
+echo 'export freetds-dir="/app/vendor/freetds-0.91"' >> $PROFILE_PATH
