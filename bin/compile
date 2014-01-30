@@ -6,7 +6,7 @@ indent() {
 
 echo "-----> Install FreeTDS"
 BUILD_DIR=$1
-DOWNLOAD_URL="http://c.aai.io/2Y0r1B1T0n2R/download/freetds_0.91.tgz"
+DOWNLOAD_URL="http://f.cl.ly/items/41391e1i1q0w1d2n0Q1J/freetds-0.91.tgz"
 
 echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
 
