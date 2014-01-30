@@ -6,7 +6,7 @@ indent() {
 
 echo "-----> Install FreeTDS"
 BUILD_DIR=$1
-DOWNLOAD_URL="http://c.aai.io/2T341d1e3K0i/download/freetds_0.9.1.tgz"
+DOWNLOAD_URL="http://c.aai.io/2Y0r1B1T0n2R/download/freetds_0.91.tgz"
 
 echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
 
@@ -16,5 +16,5 @@ curl -L --silent $DOWNLOAD_URL | tar xz
 echo "exporting PATH and LIBRARY_PATH" | indent
 PROFILE_PATH="$BUILD_DIR/.profile.d/freetds.sh"
 mkdir -p $(dirname $PROFILE_PATH)
-echo 'export PATH="$PATH:vendor/freetds/bin"' >> $PROFILE_PATH
-echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:vendor/freetds/lib"' >> $PROFILE_PATH
+echo 'export PATH="$PATH:/app/vendor/freetds_0.91/bin"' >> $PROFILE_PATH
+echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/vendor/freetds_0.91/lib"' >> $PROFILE_PATH
