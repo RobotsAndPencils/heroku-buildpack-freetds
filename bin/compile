@@ -21,4 +21,4 @@ echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/vendor/freetds_0.91/lib"' >>
 echo 'export LIBRARY_PATH="$LIBRARY_PATH:/app/vendor/freetds_0.91/lib"' >> $PROFILE_PATH
 echo 'export CPATH="$CPATH:/app/vendor/freetds_0.91/include"' >> $PROFILE_PATH
 echo 'export CPPATH="$CPPATH:/app/vendor/freetds_0.91/include"' >> $PROFILE_PATH
-echo 'export FREETDS_PATH="/app/vendor/freetds_0.91"' >> $PROFILE_PATH
+echo 'export FREETDS_DIR="/app/vendor/freetds_0.91"' >> $PROFILE_PATH
