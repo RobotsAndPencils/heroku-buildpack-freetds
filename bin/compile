@@ -1,27 +1,23 @@
-#!/usr/bin/env ruby
-require 'mkmf'
-puts "-----> Found a .freetds.conf"
+#!/bin/sh
 
-# sync output
-$stdout.sync = true
+indent() {
+  sed -u 's/^/       /'
+}
 
-FREETDS_TGZ="http://c.aai.io/2T341d1e3K0i"
-VENDOR_DIR="#{ARGV[0]}/vendor"
-FREETDS_DIR="#{VENDOR_DIR}/freetds"
-TINYTDS_DIR="#{VENDOR_DIR}/bundle"
+echo "-----> Install FreeTDS"
+BUILD_DIR=$1
+VENDOR_DIR="vendor"
+DOWNLOAD_URL="http://c.aai.io/2T341d1e3K0i"
 
-def indent msg 
-  puts "       #{msg}"
-end
+echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
 
-indent "Creating folder"
-result = `mkdir #{FREETDS_DIR}`
+cd $BUILD_DIR
+mkdir -p $VENDOR_DIR
+cd $VENDOR_DIR
+curl -L --silent $DOWNLOAD_URL | tar xz
 
-indent "Downloading and extracting archive from #{S3BUCKET}..."
-result = `curl #{FREETDS_TGZ} -s -o - | tar -xz -C #{FREETDS_DIR} -f - `
-
-if $?.success?
-  indent "Done."
-else
-  raise "ERROR! #{$?}"
-end
+echo "exporting PATH and LIBRARY_PATH" | indent
+PROFILE_PATH="$BUILD_DIR/.profile.d/freetds.sh"
+mkdir -p $(dirname $PROFILE_PATH)
+echo 'export PATH="$PATH:vendor/freetds/bin"' >> $PROFILE_PATH
+echo 'export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:vendor/freetds/lib"' >> $PROFILE_PATH
