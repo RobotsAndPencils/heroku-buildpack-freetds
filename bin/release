@@ -1,2 +1,8 @@
-#!/bin/sh
-echo "--- {}"
+#!/usr/bin/env bash
+# bin/release <build-dir>
+
+cat <<EOF
+---
+config_vars:
+  PATH: /usr/local/bin:/usr/bin:/bin:/app/bin:/app/vendor/freetds-0.91/bin
+EOF
