@@ -1,43 +1,27 @@
-#!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
+#!/usr/bin/env ruby
+require 'mkmf'
+puts "-----> Found a .freetds.conf"
 
-# fail fast
-set -e
+# sync output
+$stdout.sync = true
 
-# debug
-#set -x
+FREETDS_TGZ="http://c.aai.io/2T341d1e3K0i"
+VENDOR_DIR="#{ARGV[0]}/vendor"
+FREETDS_DIR="#{VENDOR_DIR}/freetds"
+TINYTDS_DIR="#{VENDOR_DIR}/bundle"
 
-# clean up leaking environment
-unset GIT_DIR
+def indent msg 
+  puts "       #{msg}"
+end
 
-BUILD_DIR=$1
-CACHE_DIR=$2
+indent "Creating folder"
+result = `mkdir #{FREETDS_DIR}`
 
-VERSION=0.91
+indent "Downloading and extracting archive from #{S3BUCKET}..."
+result = `curl #{FREETDS_TGZ} -s -o - | tar -xz -C #{FREETDS_DIR} -f - `
 
-function indent() {
-  c='s/^/       /'
-  case $(uname) in
-    Darwin) sed -l "$c";;
-    *)      sed -u "$c";;
-  esac
-}
-if [ ! -d "$CACHE_DIR/freetds-$VERSION" ]; then
-  echo "-----> Downloading FreeTDS"
-  mkdir -p $CACHE_DIR
-  FREETDS_TAR=http://mirrors.ibiblio.org/freetds/stable/freetds-0.91.tar.gz
-  curl $FREETDS_TAR -s -o - | tar xzf - -C $CACHE_DIR
-fi
-
-echo "-----> Vendoring FreeTDS into slug"
-cp -r $CACHE_DIR/freetds-$VERSION $BUILD_DIR/vendor/freetds
-
-cd $BUILD_DIR/vendor/freetds
-
-echo "-----> Configure FreeTDS"
-./configure --prefix=$BUILD_DIR/vendor | indent
-echo "-----> Configure make"
-make | indent
-echo "-----> Configure Install FreeTDS"
-make install | indent
-cd $BUILD_DIR
+if $?.success?
+  indent "Done."
+else
+  raise "ERROR! #{$?}"
+end
