@@ -12,6 +12,9 @@ echo "DOWNLOAD_URL = " $DOWNLOAD_URL | indent
 cd $BUILD_DIR
 curl -L --silent $DOWNLOAD_URL | tar xz
 
+export EXTRA_CPPFLAGS="-I$BUILD_DIR/vendor/freetds-0.91/include" 
+export EXTRA_LDFLAGS="-L$BUILD_DIR/vendor/freetds-0.91/lib -Wl,-rpath,$BUILD_DIR/vendor/freetds-0.91/lib"
+
 echo "exporting PATH and LIBRARY_PATH" | indent
 PROFILE_PATH="$BUILD_DIR/.profile.d/freetds.sh"
 mkdir -p $(dirname $PROFILE_PATH)
